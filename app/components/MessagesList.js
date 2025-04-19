@@ -1,10 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import MessageCard from './MessageCard';
 import { fetchAlerts, fetchSupportMessages, setupPolling } from '../services/apiService';
 import useDebounce from '@/app/hooks/useDebounce';
-import { DEPARTMENTS, getSeverityLabel, SEVERITY_DETAILS, TABS } from '../constants/enums';
+import {
+  DEPARTMENTS,
+  getSeverityLabel,
+  SEVERITY,
+  SEVERITY_BY_KEY,
+  SEVERITY_DETAILS,
+  TABS,
+} from '../constants/enums';
 import styles from './MessagesList.module.css';
 
 export default function MessagesList({
@@ -57,6 +64,25 @@ export default function MessagesList({
     return cleanup;
   }, [debouncedInputValue, selectedDepartment, selectedSeverity, isAlerts]);
 
+  const severityCounts = useMemo(() => {
+    const counts = {
+      [SEVERITY.CRITICAL]: 0,
+      [SEVERITY.HIGH]: 0,
+      [SEVERITY.MEDIUM]: 0,
+      [SEVERITY.LOW]: 0,
+      [SEVERITY.INFO]: 0,
+    };
+
+    items.forEach(item => {
+      const severityKey = isAlerts ? item.priority : SEVERITY_BY_KEY[item.severity];
+      if (counts[severityKey] !== undefined) {
+        counts[severityKey]++;
+      }
+    });
+
+    return counts;
+  }, [items, isAlerts]);
+
   if (loading) {
     return <div className={styles.loading}>Loading {isAlerts ? 'alerts' : 'messages'}</div>;
   }
@@ -105,6 +131,21 @@ export default function MessagesList({
             ? 'Alerts from monitoring systems. Sorted by importance (highest first).'
             : 'Messages from support channels. Sorted by importance (highest first).'}
         </p>
+      </div>
+
+      <div className={styles.severitySummary}>
+        {Object.entries(severityCounts)
+          .filter(([_, count]) => count > 0)
+          .sort(([a], [b]) => Number(a) - Number(b)) // Sort by severity (critical first)
+          .map(([severity, count]) => (
+            <div
+              key={severity}
+              className={`${styles.severityCount} ${styles[`severity${getSeverityLabel(Number(severity))}`]}`}
+            >
+              <span className={styles.severityLabel}>{getSeverityLabel(Number(severity))}</span>
+              <span className={styles.severityNumber}>{count}</span>
+            </div>
+          ))}
       </div>
 
       <div className={styles.messagesGrid}>

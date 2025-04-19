@@ -55,6 +55,116 @@
   margin: 0;
 }
 
+.severitySummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.severityCount {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: var(--gray-alpha-100);
+  transition: all 0.2s ease;
+}
+
+.severityCount:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.severityLabel {
+  color: rgba(var(--gray-rgb), 0.8);
+}
+
+.severityNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.4rem;
+  border-radius: 12px;
+  background-color: rgba(var(--gray-rgb), 0.1);
+  font-weight: 600;
+}
+
+.severityCritical {
+  background-color: rgba(255, 59, 48, 0.1);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+}
+
+.severityCritical .severityLabel {
+  color: rgb(255, 59, 48);
+}
+
+.severityCritical .severityNumber {
+  background-color: rgba(255, 59, 48, 0.2);
+  color: rgb(255, 59, 48);
+}
+
+.severityHigh {
+  background-color: rgba(255, 149, 0, 0.1);
+  border: 1px solid rgba(255, 149, 0, 0.2);
+}
+
+.severityHigh .severityLabel {
+  color: rgb(255, 149, 0);
+}
+
+.severityHigh .severityNumber {
+  background-color: rgba(255, 149, 0, 0.2);
+  color: rgb(255, 149, 0);
+}
+
+.severityMedium {
+  background-color: rgba(255, 204, 0, 0.1);
+  border: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.severityMedium .severityLabel {
+  color: rgb(255, 204, 0);
+}
+
+.severityMedium .severityNumber {
+  background-color: rgba(255, 204, 0, 0.2);
+  color: rgb(255, 204, 0);
+}
+
+.severityLow {
+  background-color: rgba(52, 199, 89, 0.1);
+  border: 1px solid rgba(52, 199, 89, 0.2);
+}
+
+.severityLow .severityLabel {
+  color: rgb(52, 199, 89);
+}
+
+.severityLow .severityNumber {
+  background-color: rgba(52, 199, 89, 0.2);
+  color: rgb(52, 199, 89);
+}
+
+.severityInfo {
+  background-color: rgba(0, 122, 255, 0.1);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.severityInfo .severityLabel {
+  color: rgb(0, 122, 255);
+}
+
+.severityInfo .severityNumber {
+  background-color: rgba(0, 122, 255, 0.2);
+  color: rgb(0, 122, 255);
+}
+
 .messagesGrid {
   display: grid;
   grid-template-columns: 1fr;
