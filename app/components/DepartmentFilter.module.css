@@ -138,3 +138,21 @@
   background-color: rgba(250, 140, 22, 0.1);
   border-left: 3px solid #fa8c16;
 }
+
+.ios {
+  color: #ff4d4f;
+  background-color: rgba(255, 77, 79, 0.1);
+  border-left: 3px solid #ff4d4f;
+}
+
+.android {
+  color: #7cb305;
+  background-color: rgba(124, 179, 5, 0.1);
+  border-left: 3px solid #7cb305;
+}
+
+.mobile {
+  color: #13c2c2;
+  background-color: rgba(19, 194, 194, 0.1);
+  border-left: 3px solid #13c2c2;
+}

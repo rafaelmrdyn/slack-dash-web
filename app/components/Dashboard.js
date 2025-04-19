@@ -10,16 +10,17 @@ import DepartmentFilter from './DepartmentFilter';
 import SeverityFilter from './SeverityFilter';
 import SearchFilter from './SearchFilter';
 import { useTheme } from '../context/ThemeContext';
+import { TABS, DEPARTMENTS, SEVERITY_DETAILS } from '../constants/enums';
 import styles from './Dashboard.module.css';
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState('alerts');
-  const [selectedDepartment, setSelectedDepartment] = useState('all');
-  const [selectedSeverity, setSelectedSeverity] = useState('all');
+  const [activeTab, setActiveTab] = useState(TABS.ALERTS);
+  const [selectedDepartment, setSelectedDepartment] = useState(DEPARTMENTS.ALL);
+  const [selectedSeverity, setSelectedSeverity] = useState(SEVERITY_DETAILS.ALL.id);
   const [searchTerm, setSearchTerm] = useState('');
   const { theme } = useTheme();
 
-  const isActiveAlertsTab = activeTab === 'alerts';
+  const isActiveAlertsTab = activeTab === TABS.ALERTS;
 
   return (
     <div className={styles.dashboard}>

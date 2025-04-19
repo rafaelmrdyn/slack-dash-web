@@ -1,5 +1,6 @@
 'use client';
 
+import { SEVERITY, getSeverityLabel } from '../constants/enums';
 import styles from './SupportMessageCard.module.css';
 
 export default function SupportMessageCard({ message }) {
@@ -29,31 +30,16 @@ export default function SupportMessageCard({ message }) {
 
   const getImportanceClass = () => {
     switch (message.importance) {
-      case 5:
+      case SEVERITY.CRITICAL:
         return styles.criticalImportance;
-      case 4:
+      case SEVERITY.HIGH:
         return styles.highImportance;
-      case 3:
+      case SEVERITY.MEDIUM:
         return styles.mediumImportance;
-      case 2:
+      case SEVERITY.LOW:
         return styles.lowImportance;
       default:
         return styles.infoImportance;
-    }
-  };
-
-  const getImportanceLabel = () => {
-    switch (message.importance) {
-      case 5:
-        return 'Critical';
-      case 4:
-        return 'High';
-      case 3:
-        return 'Medium';
-      case 2:
-        return 'Low';
-      default:
-        return 'Info';
     }
   };
 
@@ -71,7 +57,7 @@ export default function SupportMessageCard({ message }) {
 
       <div className={styles.messageFooter}>
         <div className={styles.messageMeta}>
-          <span className={styles.importanceBadge}>{getImportanceLabel()}</span>
+          <span className={styles.importanceBadge}>{getSeverityLabel(message.importance)}</span>
           <span className={styles.departmentBadge}>{message.department}</span>
         </div>
       </div>

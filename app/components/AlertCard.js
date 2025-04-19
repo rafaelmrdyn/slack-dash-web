@@ -1,5 +1,6 @@
 'use client';
 
+import { SEVERITY, getSeverityLabel } from '../constants/enums';
 import styles from './AlertCard.module.css';
 
 export default function AlertCard({ alert }) {
@@ -29,31 +30,16 @@ export default function AlertCard({ alert }) {
 
   const getImportanceClass = () => {
     switch (alert.importance) {
-      case 5:
+      case SEVERITY.CRITICAL:
         return styles.criticalImportance;
-      case 4:
+      case SEVERITY.HIGH:
         return styles.highImportance;
-      case 3:
+      case SEVERITY.MEDIUM:
         return styles.mediumImportance;
-      case 2:
+      case SEVERITY.LOW:
         return styles.lowImportance;
       default:
         return styles.infoImportance;
-    }
-  };
-
-  const getImportanceLabel = () => {
-    switch (alert.importance) {
-      case 5:
-        return 'Critical';
-      case 4:
-        return 'High';
-      case 3:
-        return 'Medium';
-      case 2:
-        return 'Low';
-      default:
-        return 'Info';
     }
   };
 
@@ -68,7 +54,7 @@ export default function AlertCard({ alert }) {
 
       <div className={styles.alertFooter}>
         <div className={styles.alertMeta}>
-          <span className={styles.importanceBadge}>{getImportanceLabel()}</span>
+          <span className={styles.importanceBadge}>{getSeverityLabel(alert.importance)}</span>
           {alert.recurring && <span className={styles.recurringBadge}>Recurring</span>}
           <span className={styles.departmentBadge}>{alert.department}</span>
           {alert.tags && alert.tags.length > 0 && (
