@@ -51,7 +51,7 @@ export default function MessagesList({
         setItems(data);
         setLoading(false);
       },
-      30000
+      10000
     );
 
     return cleanup;
