@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import MessageCard from './MessageCard';
-import { fetchAlerts, fetchSupportMessages, setupPolling } from '../services/apiService';
+import { fetchAlerts, fetchSupportMessages } from '../services/apiService';
 import useDebounce from '@/app/hooks/useDebounce';
 import {
   DEPARTMENTS,
@@ -29,8 +29,10 @@ export default function MessagesList({
   useEffect(() => {
     setLoading(true);
 
-    const fetchItemsWithSearch = () => {
-      let params = { search: debouncedInputValue };
+    const abortController = new AbortController();
+
+    async function fetchItemsWithSearch() {
+      let params = { search: debouncedInputValue, signal: abortController.signal };
 
       if (SEVERITY_DETAILS.ALL.id !== selectedSeverity) {
         params.priority = selectedSeverity;
@@ -50,18 +52,26 @@ export default function MessagesList({
       }
 
       return isAlerts ? fetchAlerts(params) : fetchSupportMessages(params);
-    };
+    }
 
-    const cleanup = setupPolling(
-      fetchItemsWithSearch,
-      data => {
+    fetchItemsWithSearch().then(data => {
+      if (abortController.signal.aborted) return;
+      setItems(data);
+      setLoading(false);
+    });
+
+    const intervalId = setInterval(() => {
+      fetchItemsWithSearch().then(data => {
+        if (abortController.signal.aborted) return;
         setItems(data);
         setLoading(false);
-      },
-      10000
-    );
+      });
+    }, 10000);
 
-    return cleanup;
+    return () => {
+      abortController.abort();
+      clearInterval(intervalId);
+    };
   }, [debouncedInputValue, selectedDepartment, selectedSeverity, isAlerts]);
 
   const severityCounts = useMemo(() => {

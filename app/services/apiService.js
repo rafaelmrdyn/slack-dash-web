@@ -7,7 +7,7 @@ const api = axios.create({
   },
 });
 
-export const fetchAlerts = async ({ priority, search }) => {
+export const fetchAlerts = async ({ priority, search, signal }) => {
   try {
     return [
       {
@@ -71,6 +71,7 @@ export const fetchAlerts = async ({ priority, search }) => {
     ];
     const response = await api.get('/alerts', {
       params: { priority, search },
+      signal,
     });
     return response.data;
   } catch (error) {
@@ -78,7 +79,7 @@ export const fetchAlerts = async ({ priority, search }) => {
   }
 };
 
-export const fetchSupportMessages = async ({ search = '', department, severity }) => {
+export const fetchSupportMessages = async ({ search = '', department, severity, signal }) => {
   try {
     return [
       {
@@ -196,17 +197,10 @@ export const fetchSupportMessages = async ({ search = '', department, severity }
     ];
     const response = await api.get('/messages', {
       params: { search, department, severity },
+      signal,
     });
     return response.data;
   } catch (error) {
     return [];
   }
-};
-
-export const setupPolling = (fetchFunction, setDataFunction, interval = 5000) => {
-  fetchFunction().then(setDataFunction).catch(console.error);
-  const intervalId = setInterval(() => {
-    fetchFunction().then(setDataFunction).catch(console.error);
-  }, interval);
-  return () => clearInterval(intervalId);
 };
