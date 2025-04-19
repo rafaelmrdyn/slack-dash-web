@@ -6,20 +6,18 @@ import { fetchAlerts, setupPolling } from '../services/apiService';
 import useDebounce from '@/app/hooks/useDebounce';
 import styles from './AlertsList.module.css';
 
-export default function AlertsList({
-  selectedDepartment,
-  selectedSeverity,
-  selectedTag,
-  searchTerm = '',
-}) {
+export default function AlertsList({ selectedDepartment, selectedSeverity, searchTerm = '' }) {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const debouncedInputValue = useDebounce(searchTerm.trim(), 500);
   useEffect(() => {
-    const fetchAlertsWithSearch = () => fetchAlerts(debouncedInputValue);
-
-    // Set up polling for real-time updates
+    const fetchAlertsWithSearch = () =>
+      fetchAlerts({
+        search: debouncedInputValue,
+        department: selectedDepartment,
+        severity: selectedSeverity,
+      });
     setLoading(true);
     const cleanup = setupPolling(
       fetchAlertsWithSearch,
@@ -28,34 +26,24 @@ export default function AlertsList({
         setLoading(false);
       },
       30000
-    ); // Poll every 30 seconds
-
-    // Clean up the interval when the component unmounts
+    );
     return cleanup;
-  }, [debouncedInputValue]);
+  }, [debouncedInputValue, selectedDepartment, selectedSeverity]);
 
   if (loading) {
     return <div className={styles.loading}>Loading alerts</div>;
   }
 
-  // Filter alerts based on selected department and severity
   let filteredAlerts = alerts;
 
-  // Apply department filter
   if (selectedDepartment !== 'all') {
     filteredAlerts = filteredAlerts.filter(alert => alert.department === selectedDepartment);
   }
 
-  // Apply severity filter
   if (selectedSeverity !== 'all') {
     filteredAlerts = filteredAlerts.filter(
       alert => alert.importance === parseInt(selectedSeverity)
     );
-  }
-
-  // Apply tag filter
-  if (selectedTag && selectedTag !== 'all') {
-    filteredAlerts = filteredAlerts.filter(alert => alert.tags && alert.tags.includes(selectedTag));
   }
 
   if (filteredAlerts.length === 0) {
@@ -65,21 +53,13 @@ export default function AlertsList({
         <p>
           {alerts.length === 0
             ? 'There are no alerts at this time.'
-            : selectedTag !== 'all' && selectedDepartment !== 'all' && selectedSeverity !== 'all'
-              ? `There are no "${selectedTag}" tagged alerts with severity ${selectedSeverity} for the ${selectedDepartment} department.`
-              : selectedTag !== 'all' && selectedDepartment !== 'all'
-                ? `There are no "${selectedTag}" tagged alerts for the ${selectedDepartment} department.`
-                : selectedTag !== 'all' && selectedSeverity !== 'all'
-                  ? `There are no "${selectedTag}" tagged alerts with severity ${selectedSeverity}.`
-                  : selectedDepartment !== 'all' && selectedSeverity !== 'all'
-                    ? `There are no severity ${selectedSeverity} alerts for the ${selectedDepartment} department.`
-                    : selectedTag !== 'all'
-                      ? `There are no alerts tagged with "${selectedTag}".`
-                      : selectedSeverity !== 'all'
-                        ? `There are no severity ${selectedSeverity} alerts.`
-                        : selectedDepartment !== 'all'
-                          ? `There are no alerts for the ${selectedDepartment} department.`
-                          : 'There are no alerts matching your filters.'}
+            : selectedDepartment !== 'all' && selectedSeverity !== 'all'
+              ? `There are no severity ${selectedSeverity} alerts for the ${selectedDepartment} department.`
+              : selectedSeverity !== 'all'
+                ? `There are no severity ${selectedSeverity} alerts.`
+                : selectedDepartment !== 'all'
+                  ? `There are no alerts for the ${selectedDepartment} department.`
+                  : 'There are no alerts matching your filters.'}
         </p>
       </div>
     );
@@ -92,21 +72,13 @@ export default function AlertsList({
         <div className={styles.alertsInfo}>
           <span className={styles.alertsCount}>
             {filteredAlerts.length}{' '}
-            {selectedTag !== 'all' && selectedDepartment !== 'all' && selectedSeverity !== 'all'
-              ? ` "${selectedTag}" tagged ${selectedDepartment} severity ${selectedSeverity} `
-              : selectedTag !== 'all' && selectedDepartment !== 'all'
-                ? ` "${selectedTag}" tagged ${selectedDepartment} `
-                : selectedTag !== 'all' && selectedSeverity !== 'all'
-                  ? ` "${selectedTag}" tagged severity ${selectedSeverity} `
-                  : selectedDepartment !== 'all' && selectedSeverity !== 'all'
-                    ? ` ${selectedDepartment} severity ${selectedSeverity} `
-                    : selectedTag !== 'all'
-                      ? ` "${selectedTag}" tagged `
-                      : selectedSeverity !== 'all'
-                        ? ` severity ${selectedSeverity} `
-                        : selectedDepartment !== 'all'
-                          ? ` ${selectedDepartment} `
-                          : ' '}
+            {selectedDepartment !== 'all' && selectedSeverity !== 'all'
+              ? ` ${selectedDepartment} severity ${selectedSeverity} `
+              : selectedSeverity !== 'all'
+                ? ` severity ${selectedSeverity} `
+                : selectedDepartment !== 'all'
+                  ? ` ${selectedDepartment} `
+                  : ' '}
             alerts
           </span>
         </div>

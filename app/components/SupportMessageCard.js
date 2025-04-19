@@ -3,7 +3,6 @@
 import styles from './SupportMessageCard.module.css';
 
 export default function SupportMessageCard({ message }) {
-  // Format the timestamp to a readable format
   const formatTime = isoString => {
     const date = new Date(isoString);
     return (
@@ -14,7 +13,6 @@ export default function SupportMessageCard({ message }) {
     );
   };
 
-  // Calculated time ago
   const getTimeAgo = date => {
     const now = new Date();
     const diffMs = now - date;
@@ -29,7 +27,6 @@ export default function SupportMessageCard({ message }) {
     }
   };
 
-  // Determine importance class
   const getImportanceClass = () => {
     switch (message.importance) {
       case 5:
@@ -45,7 +42,6 @@ export default function SupportMessageCard({ message }) {
     }
   };
 
-  // Determine importance label
   const getImportanceLabel = () => {
     switch (message.importance) {
       case 5:

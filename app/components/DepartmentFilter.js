@@ -11,7 +11,6 @@ export default function DepartmentFilter({ selectedDepartment, onDepartmentChang
     { id: 'product', name: 'Product', class: styles.product, icon: '📊' },
   ];
 
-  // Get the department details for the current selection
   const getDepartmentDetails = () => {
     if (selectedDepartment === 'all') return null;
     return departments.find(dept => dept.id === selectedDepartment);

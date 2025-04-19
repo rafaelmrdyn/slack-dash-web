@@ -7,7 +7,6 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light');
 
-  // Initialize theme from localStorage or system preference
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
@@ -17,7 +16,6 @@ export function ThemeProvider({ children }) {
     }
   }, []);
 
-  // Update localStorage and document class when theme changes
   useEffect(() => {
     localStorage.setItem('theme', theme);
     document.documentElement.setAttribute('data-theme', theme);

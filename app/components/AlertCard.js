@@ -3,7 +3,6 @@
 import styles from './AlertCard.module.css';
 
 export default function AlertCard({ alert }) {
-  // Format the timestamp to a readable format
   const formatTime = isoString => {
     const date = new Date(isoString);
     return (
@@ -14,7 +13,6 @@ export default function AlertCard({ alert }) {
     );
   };
 
-  // Calculated time ago
   const getTimeAgo = date => {
     const now = new Date();
     const diffMs = now - date;
@@ -29,7 +27,6 @@ export default function AlertCard({ alert }) {
     }
   };
 
-  // Determine importance class
   const getImportanceClass = () => {
     switch (alert.importance) {
       case 5:
@@ -45,7 +42,6 @@ export default function AlertCard({ alert }) {
     }
   };
 
-  // Determine importance label
   const getImportanceLabel = () => {
     switch (alert.importance) {
       case 5:

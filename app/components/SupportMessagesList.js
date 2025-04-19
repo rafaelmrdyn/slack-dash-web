@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import SupportMessageCard from './SupportMessageCard';
 import { fetchSupportMessages, setupPolling } from '../services/apiService';
-import styles from './SupportMessagesList.module.css';
 import useDebounce from '@/app/hooks/useDebounce';
+import styles from './SupportMessagesList.module.css';
 
 export default function SupportMessagesList({
   selectedDepartment,
@@ -16,11 +16,13 @@ export default function SupportMessagesList({
 
   const debouncedInputValue = useDebounce(searchTerm.trim(), 500);
   useEffect(() => {
-    // Set up polling for real-time updates
     setLoading(true);
-
-    // Create a function that passes the search term to fetchSupportMessages
-    const fetchMessagesWithSearch = () => fetchSupportMessages(debouncedInputValue);
+    const fetchMessagesWithSearch = () =>
+      fetchSupportMessages({
+        search: debouncedInputValue,
+        department: selectedDepartment,
+        severity: selectedSeverity,
+      });
     const cleanup = setupPolling(
       fetchMessagesWithSearch,
       data => {
@@ -28,27 +30,22 @@ export default function SupportMessagesList({
         setLoading(false);
       },
       30000
-    ); // Poll every 30 seconds
-
-    // Clean up the interval when the component unmounts
+    );
     return cleanup;
-  }, [debouncedInputValue]); // Re-run effect when search term changes
+  }, [debouncedInputValue, selectedDepartment, selectedSeverity]);
 
   if (loading) {
     return <div className={styles.loading}>Loading messages</div>;
   }
 
-  // Filter messages based on selected department and severity
   let filteredMessages = messages;
 
-  // Apply department filter
   if (selectedDepartment !== 'all') {
     filteredMessages = filteredMessages.filter(
       message => message.department === selectedDepartment
     );
   }
 
-  // Apply severity filter
   if (selectedSeverity !== 'all') {
     filteredMessages = filteredMessages.filter(
       message => message.importance === parseInt(selectedSeverity)

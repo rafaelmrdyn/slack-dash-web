@@ -41,7 +41,7 @@
 }
 
 .channelBadge,
-.userBadge{
+.userBadge {
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -83,6 +83,9 @@
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-weight: 500;
+}
+
+.importanceBadge {
   background-color: rgba(var(--gray-rgb), 0.1);
 }
 
