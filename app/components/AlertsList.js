@@ -5,7 +5,7 @@ import AlertCard from './AlertCard';
 import { fetchAlerts, setupPolling } from '../services/apiService';
 import styles from './AlertsList.module.css';
 
-export default function AlertsList({ selectedDepartment, selectedSeverity }) {
+export default function AlertsList({ selectedDepartment, selectedSeverity, selectedTag }) {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,6 +44,11 @@ export default function AlertsList({ selectedDepartment, selectedSeverity }) {
     );
   }
 
+  // Apply tag filter
+  if (selectedTag && selectedTag !== 'all') {
+    filteredAlerts = filteredAlerts.filter(alert => alert.tags && alert.tags.includes(selectedTag));
+  }
+
   if (filteredAlerts.length === 0) {
     return (
       <div className={styles.emptyState}>
@@ -51,11 +56,21 @@ export default function AlertsList({ selectedDepartment, selectedSeverity }) {
         <p>
           {alerts.length === 0
             ? 'There are no alerts at this time.'
-            : selectedDepartment !== 'all' && selectedSeverity !== 'all'
-              ? `There are no severity ${selectedSeverity} alerts for the ${selectedDepartment} department.`
-              : selectedSeverity !== 'all'
-                ? `There are no severity ${selectedSeverity} alerts.`
-                : `There are no alerts for the ${selectedDepartment} department.`}
+            : selectedTag !== 'all' && selectedDepartment !== 'all' && selectedSeverity !== 'all'
+              ? `There are no "${selectedTag}" tagged alerts with severity ${selectedSeverity} for the ${selectedDepartment} department.`
+              : selectedTag !== 'all' && selectedDepartment !== 'all'
+                ? `There are no "${selectedTag}" tagged alerts for the ${selectedDepartment} department.`
+                : selectedTag !== 'all' && selectedSeverity !== 'all'
+                  ? `There are no "${selectedTag}" tagged alerts with severity ${selectedSeverity}.`
+                  : selectedDepartment !== 'all' && selectedSeverity !== 'all'
+                    ? `There are no severity ${selectedSeverity} alerts for the ${selectedDepartment} department.`
+                    : selectedTag !== 'all'
+                      ? `There are no alerts tagged with "${selectedTag}".`
+                      : selectedSeverity !== 'all'
+                        ? `There are no severity ${selectedSeverity} alerts.`
+                        : selectedDepartment !== 'all'
+                          ? `There are no alerts for the ${selectedDepartment} department.`
+                          : 'There are no alerts matching your filters.'}
         </p>
       </div>
     );
@@ -68,13 +83,21 @@ export default function AlertsList({ selectedDepartment, selectedSeverity }) {
         <div className={styles.alertsInfo}>
           <span className={styles.alertsCount}>
             {filteredAlerts.length}
-            {selectedDepartment !== 'all' && selectedSeverity !== 'all'
-              ? `${selectedDepartment} severity ${selectedSeverity} `
-              : selectedSeverity !== 'all'
-                ? `severity ${selectedSeverity} `
-                : selectedDepartment !== 'all'
-                  ? `${selectedDepartment} `
-                  : ''}
+            {selectedTag !== 'all' && selectedDepartment !== 'all' && selectedSeverity !== 'all'
+              ? ` "${selectedTag}" tagged ${selectedDepartment} severity ${selectedSeverity} `
+              : selectedTag !== 'all' && selectedDepartment !== 'all'
+                ? ` "${selectedTag}" tagged ${selectedDepartment} `
+                : selectedTag !== 'all' && selectedSeverity !== 'all'
+                  ? ` "${selectedTag}" tagged severity ${selectedSeverity} `
+                  : selectedDepartment !== 'all' && selectedSeverity !== 'all'
+                    ? ` ${selectedDepartment} severity ${selectedSeverity} `
+                    : selectedTag !== 'all'
+                      ? ` "${selectedTag}" tagged `
+                      : selectedSeverity !== 'all'
+                        ? ` severity ${selectedSeverity} `
+                        : selectedDepartment !== 'all'
+                          ? ` ${selectedDepartment} `
+                          : ' '}
             alerts
           </span>
         </div>

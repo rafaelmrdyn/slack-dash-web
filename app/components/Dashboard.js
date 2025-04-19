@@ -8,6 +8,7 @@ import SupportMessagesList from './SupportMessagesList';
 import ThemeToggle from './ThemeToggle';
 import DepartmentFilter from './DepartmentFilter';
 import SeverityFilter from './SeverityFilter';
+import TagsFilter from './TagsFilter';
 import { useTheme } from '../context/ThemeContext';
 import styles from './Dashboard.module.css';
 
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('alerts');
   const [selectedDepartment, setSelectedDepartment] = useState('all');
   const [selectedSeverity, setSelectedSeverity] = useState('all');
+  const [selectedTag, setSelectedTag] = useState('all');
   const { theme } = useTheme();
 
   return (
@@ -51,11 +53,16 @@ export default function Dashboard() {
           selectedSeverity={selectedSeverity}
           onSeverityChange={setSelectedSeverity}
         />
+        <TagsFilter selectedTag={selectedTag} onTagChange={setSelectedTag} />
       </div>
 
       <main className={styles.content}>
         {activeTab === 'alerts' ? (
-          <AlertsList selectedDepartment={selectedDepartment} selectedSeverity={selectedSeverity} />
+          <AlertsList
+            selectedDepartment={selectedDepartment}
+            selectedSeverity={selectedSeverity}
+            selectedTag={selectedTag}
+          />
         ) : (
           <SupportMessagesList
             selectedDepartment={selectedDepartment}

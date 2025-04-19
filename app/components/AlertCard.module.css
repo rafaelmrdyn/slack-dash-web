@@ -65,7 +65,8 @@
 
 .importanceBadge,
 .recurringBadge,
-.departmentBadge {
+.departmentBadge,
+.tagBadge {
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
@@ -84,6 +85,25 @@
   background-color: rgba(var(--primary-rgb), 0.1);
   color: var(--primary-color);
   text-transform: capitalize;
+}
+
+.tagsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tagBadge {
+  background-color: rgba(22, 119, 255, 0.1);
+  color: #1677ff;
+  font-size: 0.7rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.tagBadge:hover {
+  background-color: rgba(22, 119, 255, 0.2);
+  transform: translateY(-1px);
 }
 
 .resolveButton {

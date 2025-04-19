@@ -75,6 +75,15 @@ export default function AlertCard({ alert }) {
           <span className={styles.importanceBadge}>{getImportanceLabel()}</span>
           {alert.recurring && <span className={styles.recurringBadge}>Recurring</span>}
           <span className={styles.departmentBadge}>{alert.department}</span>
+          {alert.tags && alert.tags.length > 0 && (
+            <div className={styles.tagsList}>
+              {alert.tags.map(tag => (
+                <span key={tag} className={styles.tagBadge}>
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

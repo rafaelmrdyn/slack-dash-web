@@ -10,6 +10,7 @@ export const mockAlerts = [
     recurring: true,
     resolved: false,
     department: 'backend',
+    tags: ['security', 'database', 'critical-issue'],
   },
   {
     id: 'alert-2',
@@ -20,6 +21,7 @@ export const mockAlerts = [
     recurring: false,
     resolved: false,
     department: 'devops',
+    tags: ['performance', 'server', 'resource-usage'],
   },
   {
     id: 'alert-3',
@@ -30,6 +32,7 @@ export const mockAlerts = [
     recurring: true,
     resolved: false,
     department: 'backend',
+    tags: ['security', 'payment', 'service-outage'],
   },
   {
     id: 'alert-4',
@@ -40,6 +43,7 @@ export const mockAlerts = [
     recurring: false,
     resolved: false,
     department: 'devops',
+    tags: ['maintenance', 'scheduled', 'notification'],
   },
   {
     id: 'alert-5',
@@ -50,6 +54,7 @@ export const mockAlerts = [
     recurring: false,
     resolved: false,
     department: 'frontend',
+    tags: ['performance', 'memory', 'web-server'],
   },
 ];
 
