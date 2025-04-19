@@ -91,7 +91,7 @@ export default function AlertsList({
         <h2>Alerts</h2>
         <div className={styles.alertsInfo}>
           <span className={styles.alertsCount}>
-            {filteredAlerts.length}
+            {filteredAlerts.length}{' '}
             {selectedTag !== 'all' && selectedDepartment !== 'all' && selectedSeverity !== 'all'
               ? ` "${selectedTag}" tagged ${selectedDepartment} severity ${selectedSeverity} `
               : selectedTag !== 'all' && selectedDepartment !== 'all'

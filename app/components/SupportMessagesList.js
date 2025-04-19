@@ -78,7 +78,7 @@ export default function SupportMessagesList({
         <h2>Support Messages</h2>
         <div className={styles.messagesInfo}>
           <span className={styles.messagesCount}>
-            {filteredMessages.length}
+            {filteredMessages.length}{' '}
             {selectedDepartment !== 'all' && selectedSeverity !== 'all'
               ? `${selectedDepartment} severity ${selectedSeverity} `
               : selectedSeverity !== 'all'
