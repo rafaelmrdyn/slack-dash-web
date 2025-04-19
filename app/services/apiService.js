@@ -7,10 +7,10 @@ const api = axios.create({
   },
 });
 
-export const fetchAlerts = async ({ search = '', department = 'all', severity = 'all' }) => {
+export const fetchAlerts = async ({ priority, search }) => {
   try {
     const response = await api.get('/alerts', {
-      params: { search, department, severity },
+      params: { priority, search },
     });
     return response.data;
   } catch (error) {
@@ -19,10 +19,10 @@ export const fetchAlerts = async ({ search = '', department = 'all', severity = 
   }
 };
 
-export const fetchSupportMessages = async ({ search = '', department = 'all' }) => {
+export const fetchSupportMessages = async ({ search = '', department, severity }) => {
   try {
-    const response = await api.get('/support-messages', {
-      params: { search, department },
+    const response = await api.get('/messages', {
+      params: { search, department, severity },
     });
     return response.data;
   } catch (error) {

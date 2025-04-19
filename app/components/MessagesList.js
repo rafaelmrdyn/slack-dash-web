@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import MessageCard from './MessageCard';
 import { fetchAlerts, fetchSupportMessages, setupPolling } from '../services/apiService';
 import useDebounce from '@/app/hooks/useDebounce';
-import { TABS } from '../constants/enums';
+import { DEPARTMENTS, getSeverityLabel, SEVERITY_DETAILS, TABS } from '../constants/enums';
 import styles from './MessagesList.module.css';
 
 export default function MessagesList({
@@ -23,11 +23,24 @@ export default function MessagesList({
     setLoading(true);
 
     const fetchItemsWithSearch = () => {
-      const params = {
-        search: debouncedInputValue,
-        department: selectedDepartment,
-        severity: selectedSeverity,
-      };
+      let params = { search: debouncedInputValue };
+
+      if (SEVERITY_DETAILS.ALL.id !== selectedSeverity) {
+        params.priority = selectedSeverity;
+      }
+
+      if (!isAlerts) {
+        if (DEPARTMENTS.ALL !== selectedDepartment) {
+          params.department = selectedDepartment;
+        }
+        if (SEVERITY_DETAILS.ALL.id !== selectedSeverity) {
+          params.sevirity = getSeverityLabel(selectedSeverity).toLowerCase();
+        }
+      } else {
+        if (SEVERITY_DETAILS.ALL.id !== selectedSeverity) {
+          params.priority = selectedSeverity;
+        }
+      }
 
       return isAlerts ? fetchAlerts(params) : fetchSupportMessages(params);
     };
@@ -48,17 +61,7 @@ export default function MessagesList({
     return <div className={styles.loading}>Loading {isAlerts ? 'alerts' : 'messages'}</div>;
   }
 
-  let filteredItems = items;
-
-  if (selectedDepartment !== 'all') {
-    filteredItems = filteredItems.filter(item => item.department === selectedDepartment);
-  }
-
-  if (selectedSeverity !== 'all') {
-    filteredItems = filteredItems.filter(item => item.importance === parseInt(selectedSeverity));
-  }
-
-  if (filteredItems.length === 0) {
+  if (items.length === 0) {
     return (
       <div className={styles.emptyState}>
         <h3>No {isAlerts ? 'alerts' : 'messages'}</h3>
@@ -83,7 +86,7 @@ export default function MessagesList({
         <h2>{isAlerts ? 'Alerts' : 'Support Messages'}</h2>
         <div className={styles.messagesInfo}>
           <span className={styles.messagesCount}>
-            {filteredItems.length}{' '}
+            {items.length}{' '}
             {selectedDepartment !== 'all' && selectedSeverity !== 'all'
               ? `${selectedDepartment} severity ${selectedSeverity} `
               : selectedSeverity !== 'all'
@@ -105,8 +108,8 @@ export default function MessagesList({
       </div>
 
       <div className={styles.messagesGrid}>
-        {filteredItems.map(item => (
-          <MessageCard key={item.id} item={item} type={isAlerts ? 'alert' : 'support'} />
+        {items.map(item => (
+          <MessageCard key={item._id} item={item} type={isAlerts ? 'alert' : 'support'} />
         ))}
       </div>
     </div>

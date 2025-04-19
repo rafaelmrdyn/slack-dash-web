@@ -48,10 +48,12 @@ export default function Dashboard() {
 
       <div className={styles.filterSection}>
         <SearchFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        <DepartmentFilter
-          selectedDepartment={selectedDepartment}
-          onDepartmentChange={setSelectedDepartment}
-        />
+        {!isActiveAlertsTab && (
+          <DepartmentFilter
+            selectedDepartment={selectedDepartment}
+            onDepartmentChange={setSelectedDepartment}
+          />
+        )}
         <SeverityFilter
           selectedSeverity={selectedSeverity}
           onSeverityChange={setSelectedSeverity}
