@@ -1,0 +1,33 @@
+# Dependency directories
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Build artifacts
+build/
+dist/
+
+# Coverage directory
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Cache directories
+.cache/
+.npm/
+
+# Environment variables
+.env*
+!.env.example
+
+# Package files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Misc
+.DS_Store

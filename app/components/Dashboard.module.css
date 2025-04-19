@@ -1,0 +1,93 @@
+.dashboard {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.logoContainer {
+  display: flex;
+}
+
+.logo {
+  height: 32px;
+  width: auto;
+}
+
+.themeToggleContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--CS1Color);
+}
+
+.description {
+  font-size: 1.1rem;
+  color: rgba(var(--gray-rgb), 0.8);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.filterSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: var(--gray-alpha-100);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.filterSection:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.content {
+  background-color: var(--gray-alpha-100);
+  border-radius: 16px;
+  padding: 1.5rem;
+  min-height: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.content:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}

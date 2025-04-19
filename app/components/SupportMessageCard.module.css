@@ -1,0 +1,220 @@
+.messageCard {
+  background-color: var(--background);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(var(--gray-rgb), 0.1);
+  border-left: 4px solid transparent;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messageCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(var(--gray-rgb), 0.15);
+}
+
+.messageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.channelInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.channelBadge,
+.userBadge {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.channelBadge {
+  color: rgba(var(--gray-rgb), 0.8);
+}
+
+.userBadge {
+  color: rgba(var(--gray-rgb), 0.9);
+}
+
+.timestamp {
+  font-size: 0.85rem;
+  color: rgba(var(--gray-rgb), 0.7);
+}
+
+.messageContent {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  word-break: break-word;
+}
+
+.messageFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.messageMeta {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.importanceBadge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  background-color: rgba(var(--gray-rgb), 0.1);
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.replyButton,
+.reactButton {
+  background: none;
+  border: 1px solid var(--gray-alpha-200);
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.replyButton:hover,
+.reactButton:hover {
+  background-color: var(--gray-alpha-100);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(var(--gray-rgb), 0.1);
+}
+
+.replyButton:active,
+.reactButton:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.reactButton:hover::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(var(--gray-rgb), 0.2);
+  border-radius: 100%;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  100% {
+    width: 150px;
+    height: 150px;
+    opacity: 0;
+  }
+}
+
+/* Importance level styling */
+.criticalImportance {
+  border-left-color: #ff4d4f;
+}
+
+.criticalImportance .importanceBadge {
+  background-color: rgba(255, 77, 79, 0.1);
+  color: #ff4d4f;
+  animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(255, 77, 79, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 79, 0);
+  }
+}
+
+.highImportance {
+  border-left-color: #ff7a45;
+}
+
+.highImportance .importanceBadge {
+  background-color: rgba(255, 122, 69, 0.1);
+  color: #ff7a45;
+}
+
+.mediumImportance {
+  border-left-color: #ffc53d;
+}
+
+.mediumImportance .importanceBadge {
+  background-color: rgba(255, 197, 61, 0.1);
+  color: #d48806;
+}
+
+.lowImportance {
+  border-left-color: #52c41a;
+}
+
+.lowImportance .importanceBadge {
+  background-color: rgba(82, 196, 26, 0.1);
+  color: #52c41a;
+}
+
+.infoImportance {
+  border-left-color: #1677ff;
+}
+
+.infoImportance .importanceBadge {
+  background-color: rgba(22, 119, 255, 0.1);
+  color: #1677ff;
+}
+
+@media (max-width: 600px) {
+  .messageFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .actionButtons {
+    width: 100%;
+  }
+
+  .replyButton,
+  .reactButton {
+    flex: 1;
+    text-align: center;
+  }
+}

@@ -1,0 +1,138 @@
+.filterContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--background);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.filterContainer:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.filterContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--CS1Color), var(--CS2Color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.filterContainer:hover::before {
+  opacity: 1;
+}
+
+.filterLabel {
+  margin-right: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.filterSelect {
+  padding: 0.6rem 1rem 0.6rem 0.8rem;
+  border: 1px solid rgba(var(--gray-rgb), 0.2);
+  border-radius: 12px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.filterSelect:hover {
+  border-color: var(--CS1Color);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--CS1Color);
+  box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.25);
+}
+
+/* Active filter styling */
+.active {
+  border-color: var(--CS1Color);
+  background-color: rgba(255, 179, 71, 0.05);
+}
+
+.active::before {
+  opacity: 1;
+}
+
+.active .filterLabel {
+  color: var(--CS1Color);
+}
+
+/* Department-specific styling */
+.departmentContainer {
+  position: relative;
+}
+
+.departmentIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background-color: rgba(var(--gray-rgb), 0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.active .departmentIcon {
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.departmentIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Department colors */
+.frontend {
+  color: #1890ff;
+  background-color: rgba(24, 144, 255, 0.1);
+  border-left: 3px solid #1890ff;
+}
+
+.backend {
+  color: #52c41a;
+  background-color: rgba(82, 196, 26, 0.1);
+  border-left: 3px solid #52c41a;
+}
+
+.devops {
+  color: #722ed1;
+  background-color: rgba(114, 46, 209, 0.1);
+  border-left: 3px solid #722ed1;
+}
+
+.product {
+  color: #fa8c16;
+  background-color: rgba(250, 140, 22, 0.1);
+  border-left: 3px solid #fa8c16;
+}

@@ -1,0 +1,167 @@
+.messagesList {
+  width: 100%;
+}
+
+.messagesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.messagesHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.messagesInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.messagesCount {
+  font-size: 0.9rem;
+  color: rgba(var(--gray-rgb), 0.7);
+  background-color: var(--gray-alpha-100);
+  padding: 0.25rem 0.5rem;
+  border-radius: 16px;
+}
+
+.reactAllButton {
+  background: none;
+  border: 1px solid var(--gray-alpha-200);
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reactAllButton:hover {
+  background-color: var(--gray-alpha-100);
+}
+
+.messagesDescription {
+  margin-bottom: 1.5rem;
+}
+
+.messagesDescription p {
+  font-size: 0.9rem;
+  color: rgba(var(--gray-rgb), 0.7);
+  margin: 0;
+}
+
+.messagesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1rem;
+  color: rgba(var(--gray-rgb), 0.7);
+  position: relative;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+}
+
+.loading::after {
+  content: '...';
+  animation: pulse 1.5s infinite ease-in-out;
+  margin-left: 4px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  text-align: center;
+  background-color: var(--gray-alpha-100);
+  border-radius: 8px;
+  padding: 2rem;
+  animation: fadeInScale 0.5s ease-out forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.emptyState::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(var(--gray-rgb), 0.05), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.emptyState h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  font-size: 0.9rem;
+  color: rgba(var(--gray-rgb), 0.7);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .messagesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .messagesHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .messagesInfo {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

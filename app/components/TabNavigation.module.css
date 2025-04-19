@@ -1,0 +1,56 @@
+.tabNavigation {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-alpha-200);
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--foreground);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  font-weight: 400;
+}
+
+.tab.active {
+  font-weight: 500;
+}
+
+.tab:hover {
+  background-color: rgba(255, 179, 71, 0.1); /* Light version of CS1Color */
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--CS2Color);
+}
+
+@media (max-width: 600px) {
+  .tabNavigation {
+    flex-direction: column;
+    border-bottom: none;
+  }
+
+  .tab {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--gray-alpha-200);
+    text-align: left;
+  }
+
+  .tab.active::after {
+    display: none;
+  }
+
+  .tab.active {
+    background-color: rgba(255, 179, 71, 0.1); /* Light version of CS1Color */
+  }
+}
