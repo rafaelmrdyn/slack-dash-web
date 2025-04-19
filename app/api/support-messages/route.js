@@ -1,9 +1,28 @@
 import { mockSupportMessages } from '../../components/mockData';
 
-export async function GET() {
+export async function GET(request) {
+  // Get the search parameter from the URL
+  const { searchParams } = new URL(request.url);
+  const searchTerm = searchParams.get('search') || '';
+
   // In a real app, this would fetch data from a database
-  // For now, we'll use our mock data
-  const sortedMessages = [...mockSupportMessages].sort((a, b) => b.importance - a.importance);
+  // For now, we'll use our mock data and filter based on search term
+  let filteredMessages = [...mockSupportMessages];
+
+  // Apply search filter if a search term is provided
+  if (searchTerm) {
+    const searchLower = searchTerm.toLowerCase();
+    filteredMessages = filteredMessages.filter(
+      message =>
+        message.message.toLowerCase().includes(searchLower) ||
+        message.channel.toLowerCase().includes(searchLower) ||
+        message.user.toLowerCase().includes(searchLower) ||
+        message.department.toLowerCase().includes(searchLower)
+    );
+  }
+
+  // Sort by importance
+  const sortedMessages = filteredMessages.sort((a, b) => b.importance - a.importance);
 
   // Simulate a delay to mimic a real API call
   await new Promise(resolve => setTimeout(resolve, 500));

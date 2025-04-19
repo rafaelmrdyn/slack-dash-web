@@ -1,9 +1,28 @@
 import { mockAlerts } from '../../components/mockData';
 
-export async function GET() {
+export async function GET(request) {
+  // Get the search parameter from the URL
+  const { searchParams } = new URL(request.url);
+  const searchTerm = searchParams.get('search') || '';
+
   // In a real app, this would fetch data from a database
-  // For now, we'll use our mock data
-  const sortedAlerts = [...mockAlerts].sort((a, b) => b.importance - a.importance);
+  // For now, we'll use our mock data and filter based on search term
+  let filteredAlerts = [...mockAlerts];
+
+  // Apply search filter if a search term is provided
+  if (searchTerm) {
+    const searchLower = searchTerm.toLowerCase();
+    filteredAlerts = filteredAlerts.filter(
+      alert =>
+        alert.message.toLowerCase().includes(searchLower) ||
+        alert.channel.toLowerCase().includes(searchLower) ||
+        (alert.tags && alert.tags.some(tag => tag.toLowerCase().includes(searchLower))) ||
+        alert.department.toLowerCase().includes(searchLower)
+    );
+  }
+
+  // Sort by importance
+  const sortedAlerts = filteredAlerts.sort((a, b) => b.importance - a.importance);
 
   // Simulate a delay to mimic a real API call
   await new Promise(resolve => setTimeout(resolve, 500));

@@ -3,17 +3,26 @@
 import { useState, useEffect } from 'react';
 import AlertCard from './AlertCard';
 import { fetchAlerts, setupPolling } from '../services/apiService';
+import useDebounce from '@/app/hooks/useDebounce';
 import styles from './AlertsList.module.css';
 
-export default function AlertsList({ selectedDepartment, selectedSeverity, selectedTag }) {
+export default function AlertsList({
+  selectedDepartment,
+  selectedSeverity,
+  selectedTag,
+  searchTerm = '',
+}) {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const debouncedInputValue = useDebounce(searchTerm.trim(), 500);
   useEffect(() => {
+    const fetchAlertsWithSearch = () => fetchAlerts(debouncedInputValue);
+
     // Set up polling for real-time updates
     setLoading(true);
     const cleanup = setupPolling(
-      fetchAlerts,
+      fetchAlertsWithSearch,
       data => {
         setAlerts(data);
         setLoading(false);
@@ -23,7 +32,7 @@ export default function AlertsList({ selectedDepartment, selectedSeverity, selec
 
     // Clean up the interval when the component unmounts
     return cleanup;
-  }, []);
+  }, [debouncedInputValue]);
 
   if (loading) {
     return <div className={styles.loading}>Loading alerts</div>;

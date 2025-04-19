@@ -4,16 +4,25 @@ import { useState, useEffect } from 'react';
 import SupportMessageCard from './SupportMessageCard';
 import { fetchSupportMessages, setupPolling } from '../services/apiService';
 import styles from './SupportMessagesList.module.css';
+import useDebounce from '@/app/hooks/useDebounce';
 
-export default function SupportMessagesList({ selectedDepartment, selectedSeverity }) {
+export default function SupportMessagesList({
+  selectedDepartment,
+  selectedSeverity,
+  searchTerm = '',
+}) {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const debouncedInputValue = useDebounce(searchTerm.trim(), 500);
   useEffect(() => {
     // Set up polling for real-time updates
     setLoading(true);
+
+    // Create a function that passes the search term to fetchSupportMessages
+    const fetchMessagesWithSearch = () => fetchSupportMessages(debouncedInputValue);
     const cleanup = setupPolling(
-      fetchSupportMessages,
+      fetchMessagesWithSearch,
       data => {
         setMessages(data);
         setLoading(false);
@@ -23,7 +32,7 @@ export default function SupportMessagesList({ selectedDepartment, selectedSeveri
 
     // Clean up the interval when the component unmounts
     return cleanup;
-  }, []);
+  }, [debouncedInputValue]); // Re-run effect when search term changes
 
   if (loading) {
     return <div className={styles.loading}>Loading messages</div>;

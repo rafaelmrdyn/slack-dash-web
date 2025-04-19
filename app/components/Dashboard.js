@@ -9,6 +9,7 @@ import ThemeToggle from './ThemeToggle';
 import DepartmentFilter from './DepartmentFilter';
 import SeverityFilter from './SeverityFilter';
 import TagsFilter from './TagsFilter';
+import SearchFilter from './SearchFilter';
 import { useTheme } from '../context/ThemeContext';
 import styles from './Dashboard.module.css';
 
@@ -17,6 +18,7 @@ export default function Dashboard() {
   const [selectedDepartment, setSelectedDepartment] = useState('all');
   const [selectedSeverity, setSelectedSeverity] = useState('all');
   const [selectedTag, setSelectedTag] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const { theme } = useTheme();
 
   return (
@@ -45,6 +47,7 @@ export default function Dashboard() {
       <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
       <div className={styles.filterSection}>
+        <SearchFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         <DepartmentFilter
           selectedDepartment={selectedDepartment}
           onDepartmentChange={setSelectedDepartment}
@@ -62,11 +65,13 @@ export default function Dashboard() {
             selectedDepartment={selectedDepartment}
             selectedSeverity={selectedSeverity}
             selectedTag={selectedTag}
+            searchTerm={searchTerm}
           />
         ) : (
           <SupportMessagesList
             selectedDepartment={selectedDepartment}
             selectedSeverity={selectedSeverity}
+            searchTerm={searchTerm}
           />
         )}
       </main>

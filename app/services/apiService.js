@@ -9,9 +9,11 @@ const api = axios.create({
 });
 
 // Alerts API
-export const fetchAlerts = async () => {
+export const fetchAlerts = async (searchTerm = '') => {
   try {
-    const response = await api.get('/alerts');
+    const response = await api.get('/alerts', {
+      params: { search: searchTerm },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching alerts:', error);
@@ -40,9 +42,11 @@ export const resolveAlert = async id => {
 };
 
 // Support Messages API
-export const fetchSupportMessages = async () => {
+export const fetchSupportMessages = async (searchTerm = '') => {
   try {
-    const response = await api.get('/support-messages');
+    const response = await api.get('/support-messages', {
+      params: { search: searchTerm },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching support messages:', error);
