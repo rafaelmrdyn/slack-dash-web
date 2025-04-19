@@ -83,8 +83,6 @@
 }
 
 .departmentBadge {
-  background-color: rgba(var(--primary-rgb), 0.1);
-  color: var(--primary-color);
   text-transform: capitalize;
 }
 
@@ -105,42 +103,6 @@
 .tagBadge:hover {
   background-color: rgba(22, 119, 255, 0.2);
   transform: translateY(-1px);
-}
-
-.resolveButton {
-  background: none;
-  border: 1px solid var(--gray-alpha-200);
-  border-radius: 4px;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.resolveButton:hover {
-  background-color: var(--gray-alpha-100);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(var(--gray-rgb), 0.1);
-}
-
-.resolveButton:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.resolveButton:hover::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(var(--gray-rgb), 0.2);
-  border-radius: 100%;
-  transform: translate(-50%, -50%);
-  animation: ripple 0.6s linear;
 }
 
 @keyframes ripple {
@@ -220,9 +182,5 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
-  }
-
-  .resolveButton {
-    width: 100%;
   }
 }

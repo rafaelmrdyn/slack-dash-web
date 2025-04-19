@@ -14,7 +14,7 @@ export default function AlertCard({ alert }) {
     );
   };
 
-  // Calculate time ago
+  // Calculated time ago
   const getTimeAgo = date => {
     const now = new Date();
     const diffMs = now - date;

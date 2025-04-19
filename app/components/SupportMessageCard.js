@@ -14,7 +14,7 @@ export default function SupportMessageCard({ message }) {
     );
   };
 
-  // Calculate time ago
+  // Calculated time ago
   const getTimeAgo = date => {
     const now = new Date();
     const diffMs = now - date;

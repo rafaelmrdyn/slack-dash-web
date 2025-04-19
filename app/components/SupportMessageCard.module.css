@@ -41,7 +41,7 @@
 }
 
 .channelBadge,
-.userBadge {
+.userBadge{
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -77,7 +77,8 @@
   gap: 0.5rem;
 }
 
-.importanceBadge {
+.importanceBadge,
+.departmentBadge {
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
@@ -85,48 +86,8 @@
   background-color: rgba(var(--gray-rgb), 0.1);
 }
 
-.actionButtons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.replyButton,
-.reactButton {
-  background: none;
-  border: 1px solid var(--gray-alpha-200);
-  border-radius: 4px;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.replyButton:hover,
-.reactButton:hover {
-  background-color: var(--gray-alpha-100);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(var(--gray-rgb), 0.1);
-}
-
-.replyButton:active,
-.reactButton:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.reactButton:hover::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(var(--gray-rgb), 0.2);
-  border-radius: 100%;
-  transform: translate(-50%, -50%);
-  animation: ripple 0.6s linear;
+.departmentBadge {
+  text-transform: capitalize;
 }
 
 @keyframes ripple {
@@ -206,15 +167,5 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
-  }
-
-  .actionButtons {
-    width: 100%;
-  }
-
-  .replyButton,
-  .reactButton {
-    flex: 1;
-    text-align: center;
   }
 }
