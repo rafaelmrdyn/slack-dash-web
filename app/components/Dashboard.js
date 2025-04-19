@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import TabNavigation from './TabNavigation';
-import AlertsList from './AlertsList';
-import SupportMessagesList from './SupportMessagesList';
+import MessagesList from './MessagesList';
 import ThemeToggle from './ThemeToggle';
 import DepartmentFilter from './DepartmentFilter';
 import SeverityFilter from './SeverityFilter';
@@ -60,19 +59,12 @@ export default function Dashboard() {
       </div>
 
       <main className={styles.content}>
-        {isActiveAlertsTab ? (
-          <AlertsList
-            selectedDepartment={selectedDepartment}
-            selectedSeverity={selectedSeverity}
-            searchTerm={searchTerm}
-          />
-        ) : (
-          <SupportMessagesList
-            selectedDepartment={selectedDepartment}
-            selectedSeverity={selectedSeverity}
-            searchTerm={searchTerm}
-          />
-        )}
+        <MessagesList
+          type={activeTab}
+          selectedDepartment={selectedDepartment}
+          selectedSeverity={selectedSeverity}
+          searchTerm={searchTerm}
+        />
       </main>
     </div>
   );
