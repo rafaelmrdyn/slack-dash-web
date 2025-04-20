@@ -1,11 +1,12 @@
 export const TABS = {
   ALERTS: 'alerts',
   SUPPORT: 'support',
+  DATADOG: 'datadog',
 };
 
 export const DEPARTMENTS = {
   ALL: 'all',
-  FRONTEND: 'frontend',
+  FRONTEND: 'Web',
   BACKEND: 'backend',
   DEVOPS: 'devops',
   PRODUCT: 'product',
@@ -16,7 +17,7 @@ export const DEPARTMENTS = {
 
 export const DEPARTMENT_DETAILS = {
   [DEPARTMENTS.ALL]: { id: DEPARTMENTS.ALL, name: 'All Departments' },
-  [DEPARTMENTS.FRONTEND]: { id: DEPARTMENTS.FRONTEND, name: 'Frontend', icon: '💻' },
+  [DEPARTMENTS.FRONTEND]: { id: DEPARTMENTS.FRONTEND, name: 'Web', icon: '💻' },
   [DEPARTMENTS.BACKEND]: { id: DEPARTMENTS.BACKEND, name: 'Backend', icon: '🔧' },
   [DEPARTMENTS.DEVOPS]: { id: DEPARTMENTS.DEVOPS, name: 'DevOps', icon: '🚀' },
   [DEPARTMENTS.PRODUCT]: { id: DEPARTMENTS.PRODUCT, name: 'Product', icon: '📊' },

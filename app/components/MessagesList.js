@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import MessageCard from './MessageCard';
-import { fetchAlerts, fetchSupportMessages } from '../services/apiService';
+import { fetchAlerts, fetchSupportMessages, fetchDatadogAnalytics } from '../services/apiService';
 import useDebounce from '@/app/hooks/useDebounce';
 import {
   DEPARTMENTS,
@@ -23,6 +23,7 @@ export default function MessagesList({
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const isAlerts = type === TABS.ALERTS;
+  const isDatadog = type === TABS.DATADOG;
 
   const debouncedInputValue = useDebounce(searchTerm.trim(), 500);
 
@@ -38,20 +39,25 @@ export default function MessagesList({
         params.priority = selectedSeverity;
       }
 
-      if (!isAlerts) {
+      if (isDatadog) {
+        if (SEVERITY_DETAILS.ALL.id !== selectedSeverity) {
+          params.severity = selectedSeverity;
+        }
+        return fetchDatadogAnalytics(params);
+      } else if (!isAlerts) {
         if (DEPARTMENTS.ALL !== selectedDepartment) {
           params.department = selectedDepartment;
         }
         if (SEVERITY_DETAILS.ALL.id !== selectedSeverity) {
           params.sevirity = getSeverityLabel(selectedSeverity).toLowerCase();
         }
+        return fetchSupportMessages(params);
       } else {
         if (SEVERITY_DETAILS.ALL.id !== selectedSeverity) {
           params.priority = selectedSeverity;
         }
+        return fetchAlerts(params);
       }
-
-      return isAlerts ? fetchAlerts(params) : fetchSupportMessages(params);
     }
 
     fetchItemsWithSearch().then(data => {
@@ -72,7 +78,7 @@ export default function MessagesList({
       abortController.abort();
       clearInterval(intervalId);
     };
-  }, [debouncedInputValue, selectedDepartment, selectedSeverity, isAlerts]);
+  }, [debouncedInputValue, selectedDepartment, selectedSeverity, isAlerts, isDatadog]);
 
   const severityCounts = useMemo(() => {
     const counts = {
@@ -84,33 +90,41 @@ export default function MessagesList({
     };
 
     items.forEach(item => {
-      const severityKey = isAlerts ? item.priority : SEVERITY_BY_KEY[item.severity];
+      const severityKey = isAlerts
+        ? item.priority
+        : isDatadog
+          ? item.severity
+          : SEVERITY_BY_KEY[item.severity];
       if (counts[severityKey] !== undefined) {
         counts[severityKey]++;
       }
     });
 
     return counts;
-  }, [items, isAlerts]);
+  }, [items, isAlerts, isDatadog]);
 
   if (loading) {
-    return <div className={styles.loading}>Loading {isAlerts ? 'alerts' : 'messages'}</div>;
+    return (
+      <div className={styles.loading}>
+        Loading {isAlerts ? 'alerts' : isDatadog ? 'Datadog analytics' : 'messages'}
+      </div>
+    );
   }
 
   if (items.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <h3>No {isAlerts ? 'alerts' : 'messages'}</h3>
+        <h3>No {isAlerts ? 'alerts' : isDatadog ? 'Datadog analytics' : 'messages'}</h3>
         <p>
           {items.length === 0
-            ? `There are no ${isAlerts ? 'alerts' : 'support messages'} at this time.`
-            : selectedDepartment !== 'all' && selectedSeverity !== 'all'
+            ? `There are no ${isAlerts ? 'alerts' : isDatadog ? 'Datadog analytics' : 'support messages'} at this time.`
+            : selectedDepartment !== 'all' && selectedSeverity !== 'all' && !isDatadog
               ? `There are no severity ${selectedSeverity} ${isAlerts ? 'alerts' : 'support messages'} for the ${selectedDepartment} department.`
               : selectedSeverity !== 'all'
-                ? `There are no severity ${selectedSeverity} ${isAlerts ? 'alerts' : 'support messages'}.`
-                : selectedDepartment !== 'all'
+                ? `There are no severity ${selectedSeverity} ${isAlerts ? 'alerts' : isDatadog ? 'Datadog analytics' : 'support messages'}.`
+                : selectedDepartment !== 'all' && !isDatadog
                   ? `There are no ${isAlerts ? 'alerts' : 'support messages'} for the ${selectedDepartment} department.`
-                  : `There are no ${isAlerts ? 'alerts' : 'support messages'} matching your filters.`}
+                  : `There are no ${isAlerts ? 'alerts' : isDatadog ? 'Datadog analytics' : 'support messages'} matching your filters.`}
         </p>
       </div>
     );
@@ -119,18 +133,18 @@ export default function MessagesList({
   return (
     <div className={styles.messagesList}>
       <div className={styles.messagesHeader}>
-        <h2>{isAlerts ? 'Alerts' : 'Support Messages'}</h2>
+        <h2>{isAlerts ? 'Alerts' : isDatadog ? 'Datadog Analytics' : 'Support Messages'}</h2>
         <div className={styles.messagesInfo}>
           <span className={styles.messagesCount}>
             {items.length}{' '}
-            {selectedDepartment !== 'all' && selectedSeverity !== 'all'
+            {selectedDepartment !== 'all' && selectedSeverity !== 'all' && !isDatadog
               ? `${selectedDepartment} severity ${selectedSeverity} `
               : selectedSeverity !== 'all'
                 ? `severity ${selectedSeverity} `
-                : selectedDepartment !== 'all'
+                : selectedDepartment !== 'all' && !isDatadog
                   ? `${selectedDepartment} `
                   : ''}
-            {isAlerts ? 'alerts' : 'messages'}
+            {isAlerts ? 'alerts' : isDatadog ? 'Datadog analytics' : 'messages'}
           </span>
         </div>
       </div>
@@ -139,7 +153,9 @@ export default function MessagesList({
         <p>
           {isAlerts
             ? 'Alerts from monitoring systems. Sorted by importance (highest first).'
-            : 'Messages from support channels. Sorted by importance (highest first).'}
+            : isDatadog
+              ? 'Analytics from Datadog monitoring. Sorted by importance (highest first).'
+              : 'Messages from support channels. Sorted by importance (highest first).'}
         </p>
       </div>
 
@@ -160,7 +176,11 @@ export default function MessagesList({
 
       <div className={styles.messagesGrid}>
         {items.map(item => (
-          <MessageCard key={item._id} item={item} type={isAlerts ? 'alert' : 'support'} />
+          <MessageCard
+            key={item._id}
+            item={item}
+            type={isAlerts ? 'alert' : isDatadog ? 'datadog' : 'support'}
+          />
         ))}
       </div>
     </div>

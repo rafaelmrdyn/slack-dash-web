@@ -18,6 +18,12 @@ export default function TabNavigation({ activeTab, onTabChange }) {
       >
         Not Reacted Support Messages
       </button>
+      <button
+        className={`${styles.tab} ${activeTab === TABS.DATADOG ? styles.active : ''}`}
+        onClick={() => onTabChange(TABS.DATADOG)}
+      >
+        Datadog Summaries
+      </button>
     </div>
   );
 }

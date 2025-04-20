@@ -19,7 +19,15 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const { theme } = useTheme();
 
+  function handleTabChange(tab) {
+    setSelectedDepartment(DEPARTMENTS.ALL);
+    setSelectedSeverity(SEVERITY_DETAILS.ALL.id);
+    setSearchTerm('');
+    setActiveTab(tab);
+  }
+
   const isActiveAlertsTab = activeTab === TABS.ALERTS;
+  const isActiveDatadogTab = activeTab === TABS.DATADOG;
 
   return (
     <div className={styles.dashboard}>
@@ -44,11 +52,13 @@ export default function Dashboard() {
         </p>
       </header>
 
-      <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
 
       <div className={styles.filterSection}>
-        <SearchFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        {!isActiveAlertsTab && (
+        {!isActiveDatadogTab && (
+          <SearchFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        )}
+        {!isActiveAlertsTab && !isActiveDatadogTab && (
           <DepartmentFilter
             selectedDepartment={selectedDepartment}
             onDepartmentChange={setSelectedDepartment}

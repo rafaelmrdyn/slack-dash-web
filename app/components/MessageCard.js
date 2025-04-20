@@ -16,7 +16,12 @@ export default function MessageCard({ item, type }) {
   }
 
   const isAlert = type === 'alert';
-  const importance = isAlert ? item.priority : SEVERITY_BY_KEY[item.severity];
+  const isDatadog = type === 'datadog';
+  const importance = isAlert
+    ? item.priority
+    : isDatadog
+      ? item.severity
+      : SEVERITY_BY_KEY[item.severity];
 
   const getImportanceClass = () => {
     switch (importance) {
@@ -34,12 +39,12 @@ export default function MessageCard({ item, type }) {
   };
 
   const timestamp = item.createdAt;
-  const message = item.text;
-  const department = item.department;
-  const channel = item.channelName;
-  const user = isAlert ? null : item.userName;
+  const message = isDatadog ? item.summary : item.text;
+  const department = isDatadog ? item.service : item.department;
+  const channel = isDatadog ? item.serviceId?.[0] : item.channelName;
+  const user = isAlert || isDatadog ? null : item.userName;
   const count = isAlert && item.count ? item.count : null;
-  const tags = !isAlert ? item.tags : null;
+  const tags = !isAlert && !isDatadog ? item.tags : null;
   const url = item.url;
   const MAX_VISIBLE_TAGS = 3;
 
