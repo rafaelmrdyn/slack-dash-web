@@ -68,6 +68,18 @@
   gap: 0.5rem;
 }
 
+.userImageContainer {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+
+.userImage {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(var(--gray-rgb), 0.2);
+}
+
 .channelBadge,
 .userBadge {
   font-size: 0.85rem;
@@ -92,6 +104,19 @@
   line-height: 1.5;
   margin-bottom: 1rem;
   word-break: break-word;
+  position: relative;
+}
+
+.messageContent .showMoreButton {
+  margin-left: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.messageTitle {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--text-primary);
 }
 
 .messageFooter {

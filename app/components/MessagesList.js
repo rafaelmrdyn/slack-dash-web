@@ -72,7 +72,7 @@ export default function MessagesList({
         setItems(data);
         setLoading(false);
       });
-    }, 10000);
+    }, 5000);
 
     return () => {
       abortController.abort();
@@ -129,7 +129,7 @@ export default function MessagesList({
       </div>
     );
   }
-
+  console.log(items);
   return (
     <div className={styles.messagesList}>
       <div className={styles.messagesHeader}>

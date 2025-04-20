@@ -7,6 +7,7 @@ import styles from './MessageCard.module.css';
 
 export default function MessageCard({ item, type }) {
   const [showAllTags, setShowAllTags] = useState(false);
+  const [showFullMessage, setShowFullMessage] = useState(false);
 
   function formatTime(createdAt) {
     const date = new Date(createdAt);
@@ -43,10 +44,15 @@ export default function MessageCard({ item, type }) {
   const department = isDatadog ? item.service : item.department;
   const channel = isDatadog ? item.serviceId?.[0] : item.channelName;
   const user = isAlert || isDatadog ? null : item.userName;
+  const userImage =
+    !isAlert && !isDatadog
+      ? item.userImage || item.userAvatar || item.avatar || item.profilePicture || item.profileImage
+      : null;
   const count = isAlert && item.count ? item.count : null;
   const tags = !isAlert && !isDatadog ? item.tags : null;
   const url = item.url;
   const MAX_VISIBLE_TAGS = 3;
+  const MAX_MESSAGE_LENGTH = 150;
 
   const handleCardClick = () => {
     if (url) {
@@ -59,6 +65,11 @@ export default function MessageCard({ item, type }) {
     setShowAllTags(!showAllTags);
   };
 
+  const handleShowMoreMessage = e => {
+    e.stopPropagation();
+    setShowFullMessage(!showFullMessage);
+  };
+
   return (
     <div
       className={`${styles.messageCard} ${getImportanceClass()} ${url ? styles.clickable : ''}`}
@@ -66,13 +77,45 @@ export default function MessageCard({ item, type }) {
     >
       <div className={styles.messageHeader}>
         <div className={styles.channelInfo}>
+          {userImage && (
+            <div className={styles.userImageContainer}>
+              <img
+                src={userImage}
+                alt={user || 'User'}
+                width={24}
+                height={24}
+                className={styles.userImage}
+              />
+            </div>
+          )}
           <span className={styles.channelBadge}>{channel}</span>
           {user && <span className={styles.userBadge}>@{user}</span>}
         </div>
         <div className={styles.timestamp}>{formatTime(timestamp)}</div>
       </div>
 
-      <div className={styles.messageContent}>{message}</div>
+      <div className={styles.messageContent}>
+        {isDatadog && (
+          <div className={styles.messageTitle}>
+            <strong>{item.title}</strong>
+          </div>
+        )}
+        {message && message.length > MAX_MESSAGE_LENGTH && !showFullMessage ? (
+          <>
+            {message.substring(0, MAX_MESSAGE_LENGTH)}...
+            <button className={styles.showMoreButton} onClick={handleShowMoreMessage}>
+              Show More
+            </button>
+          </>
+        ) : (
+          message
+        )}
+        {message && message.length > MAX_MESSAGE_LENGTH && showFullMessage && (
+          <button className={styles.showMoreButton} onClick={handleShowMoreMessage}>
+            Show Less
+          </button>
+        )}
+      </div>
 
       <div className={styles.messageFooter}>
         <div className={styles.messageMeta}>
