@@ -37,7 +37,6 @@ export const fetchDatadogAnalytics = async ({ severity = '', signal }) => {
       params: { severity },
       signal,
     });
-    debugger;
     return response.data;
   } catch (error) {
     return [];
